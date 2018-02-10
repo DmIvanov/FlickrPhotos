@@ -85,7 +85,6 @@ extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let photo = dataModel.photoModel(index: indexPath.item) else { return }
-        print("photo tapped: " + photo.imageURL)
     }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

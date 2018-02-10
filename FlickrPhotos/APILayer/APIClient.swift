@@ -49,12 +49,6 @@ class APIClient: NSObject {
                 completion(nil, error)
                 return
             }
-//            let response = try? JSONSerialization.jsonObject(
-//                with: data,
-//                options: JSONSerialization.ReadingOptions.mutableContainers
-//            )
-//            print(response)
-
             APIResponseParser.parseResponse(method: apiMethod, data: data, completion: { (responseObj, error) in
                 if error != nil {
                     completion(nil, error)
@@ -79,8 +73,6 @@ class APIClient: NSObject {
         components.queryItems = params.map { (key, value) in
             URLQueryItem(name: key, value: value)
         }
-        print("API REQUEST: " + "\(params)")
-        //print("API REQUEST: " + "\(components.url!.absoluteString)")
         let request = URLRequest(url: components.url!)
         let task = session.dataTask(
             with: request,
