@@ -15,6 +15,10 @@ class ViewControllerFactory: NSObject {
         return mainStoryboard().instantiateViewController(withIdentifier: String(describing: SearchVC.self)) as! SearchVC
     }
 
+    func photoDetailsVC() -> PhotoDetailsVC {
+        return mainStoryboard().instantiateViewController(withIdentifier: String(describing: PhotoDetailsVC.self)) as! PhotoDetailsVC
+    }
+
     // MARK: - Private
     private func mainStoryboard() -> UIStoryboard {
         return UIStoryboard(name: "Main", bundle: nil)

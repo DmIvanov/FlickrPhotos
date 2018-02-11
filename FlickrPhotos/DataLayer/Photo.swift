@@ -12,4 +12,8 @@ struct Photo: Codable {
     let server: String
     let secret: String
     let title: String?
+
+    func imageURL() -> String {
+        return "http://farm\(farm).static.flickr.com/\(server)/\(id)_\(secret).jpg"
+    }
 }

@@ -43,6 +43,11 @@ class SearchVCDataModel {
         return SearchVCCellModel(photo: dataService.photos[index], imageCache: imageCache)
     }
 
+    func detailesVCDataModel(index: Int) -> PhotoDetailsVCDataModel? {
+        guard let photoModel = photoModel(index: index) else { return nil }
+        return PhotoDetailsVCDataModel(imageCache: imageCache, photo: photoModel.photo)
+    }
+
     func filterContentForSearchText(_ searchText: String) {
         if searchText != currentQuery {
             resetPhotos()

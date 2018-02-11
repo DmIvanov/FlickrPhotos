@@ -40,6 +40,10 @@
 		289D7CAC2030347C00303EB8 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CAA2030347C00303EB8 /* NetworkService.swift */; };
 		289D7CAE20305BB600303EB8 /* NetworkServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CAD20305BB600303EB8 /* NetworkServiceTest.swift */; };
 		289D7CB020306B4000303EB8 /* DataServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CAF20306B4000303EB8 /* DataServiceTest.swift */; };
+		289D7CB2203077AD00303EB8 /* PhotoDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CB1203077AD00303EB8 /* PhotoDetailsVC.swift */; };
+		289D7CB3203077AD00303EB8 /* PhotoDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CB1203077AD00303EB8 /* PhotoDetailsVC.swift */; };
+		289D7CB52030883800303EB8 /* PhotoDetailsVCDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CB42030883800303EB8 /* PhotoDetailsVCDataModel.swift */; };
+		289D7CB62030883800303EB8 /* PhotoDetailsVCDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CB42030883800303EB8 /* PhotoDetailsVCDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +82,8 @@
 		289D7CAA2030347C00303EB8 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		289D7CAD20305BB600303EB8 /* NetworkServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTest.swift; sourceTree = "<group>"; };
 		289D7CAF20306B4000303EB8 /* DataServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServiceTest.swift; sourceTree = "<group>"; };
+		289D7CB1203077AD00303EB8 /* PhotoDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsVC.swift; sourceTree = "<group>"; };
+		289D7CB42030883800303EB8 /* PhotoDetailsVCDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsVCDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +179,8 @@
 				287E0650202CDC1F00962034 /* SearchVCDataModel.swift */,
 				287FA5C4202EEBA4004581CA /* SearchVCCell.swift */,
 				287FA5CB202F486D004581CA /* SearchVCCellModel.swift */,
+				289D7CB1203077AD00303EB8 /* PhotoDetailsVC.swift */,
+				289D7CB42030883800303EB8 /* PhotoDetailsVCDataModel.swift */,
 			);
 			path = SearchScene;
 			sourceTree = "<group>";
@@ -291,6 +299,7 @@
 			files = (
 				287E0657202D9C2500962034 /* APIResponseParser.swift in Sources */,
 				287E0653202CDCC100962034 /* Photo.swift in Sources */,
+				289D7CB2203077AD00303EB8 /* PhotoDetailsVC.swift in Sources */,
 				287FA5CC202F486D004581CA /* SearchVCCellModel.swift in Sources */,
 				287E061C202C634D00962034 /* AppDelegate.swift in Sources */,
 				287E0642202C650D00962034 /* ViewControllerFactory.swift in Sources */,
@@ -301,6 +310,7 @@
 				287FA5C5202EEBA4004581CA /* SearchVCCell.swift in Sources */,
 				287FA5C7202EEDBC004581CA /* ImageCache.swift in Sources */,
 				289D7CAB2030347C00303EB8 /* NetworkService.swift in Sources */,
+				289D7CB52030883800303EB8 /* PhotoDetailsVCDataModel.swift in Sources */,
 				287E0640202C64B800962034 /* DataService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,6 +319,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				289D7CB3203077AD00303EB8 /* PhotoDetailsVC.swift in Sources */,
 				289D7CA2202F5FD700303EB8 /* APIResponseParser.swift in Sources */,
 				289D7CA4202F601C00303EB8 /* SearchVC.swift in Sources */,
 				289D7CA3202F601400303EB8 /* ViewControllerFactory.swift in Sources */,
@@ -324,6 +335,7 @@
 				287FA5D2202F4913004581CA /* ImageCache.swift in Sources */,
 				289D7CA7202F608100303EB8 /* MainInteractorTest.swift in Sources */,
 				287FA5D0202F490D004581CA /* DataService.swift in Sources */,
+				289D7CB62030883800303EB8 /* PhotoDetailsVCDataModel.swift in Sources */,
 				287FA5D3202F491C004581CA /* MainInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,6 +482,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5H6HKHYPEJ;
 				INFOPLIST_FILE = FlickrPhotos/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -485,6 +498,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5H6HKHYPEJ;
 				INFOPLIST_FILE = FlickrPhotos/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

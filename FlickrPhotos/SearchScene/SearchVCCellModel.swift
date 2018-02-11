@@ -12,9 +12,11 @@ struct SearchVCCellModel {
 
     let imageURL: String
     private weak var cache: ImageCache?
+    let photo: Photo
 
     init(photo: Photo, imageCache: ImageCache) {
-        imageURL = "http://farm\(photo.farm).static.flickr.com/\(photo.server)/\(photo.id)_\(photo.secret).jpg"
+        self.imageURL = photo.imageURL()
+        self.photo = photo
         self.cache = imageCache
     }
 
