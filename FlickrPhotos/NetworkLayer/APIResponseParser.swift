@@ -10,7 +10,7 @@ import UIKit
 
 class APIResponseParser {
 
-    static func parseResponse(method: APIMethod, data: Data, completion: (Any?, Error?) -> ()) {
+    func parseResponse(method: APIMethod, data: Data, completion: (Any?, Error?) -> ()) {
         switch method {
         case .photosGet:
             processGetPhotosResponse(responseData: data, completion: completion)
@@ -20,7 +20,7 @@ class APIResponseParser {
     }
 
     // APIMethod.photosGet
-    private static func processGetPhotosResponse(responseData: Data, completion: ([Photo]?, Error?) -> ()) {
+    private func processGetPhotosResponse(responseData: Data, completion: ([Photo]?, Error?) -> ()) {
         do {
             let decoder = JSONDecoder()
             let responseObject = try decoder.decode(PhotosGetResponse.self, from: responseData)
@@ -32,7 +32,7 @@ class APIResponseParser {
     }
 
     // APIMethod.photosSearch
-    private static func processSearchPhotoResponse(responseData: Data, completion: ([Photo]?, Error?) -> ()) {
+    private func processSearchPhotoResponse(responseData: Data, completion: ([Photo]?, Error?) -> ()) {
         do {
             let decoder = JSONDecoder()
             let responseObject = try decoder.decode(PhotosSearchResponse.self, from: responseData)

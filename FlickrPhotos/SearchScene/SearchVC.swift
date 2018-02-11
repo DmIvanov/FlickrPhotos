@@ -84,7 +84,7 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
 extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let photo = dataModel.photoModel(index: indexPath.item) else { return }
+        // guard let photo = dataModel.photoModel(index: indexPath.item) else { return }
     }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

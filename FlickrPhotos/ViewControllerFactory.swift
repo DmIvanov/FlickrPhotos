@@ -10,11 +10,13 @@ import UIKit
 
 class ViewControllerFactory: NSObject {
 
-    class func mainStoryboard() -> UIStoryboard {
-        return UIStoryboard(name: "Main", bundle: nil)
+    // MARK: - Public
+    func searchVC() -> SearchVC {
+        return mainStoryboard().instantiateViewController(withIdentifier: String(describing: SearchVC.self)) as! SearchVC
     }
 
-    class func searchVC() -> SearchVC {
-        return mainStoryboard().instantiateViewController(withIdentifier: String(describing: SearchVC.self)) as! SearchVC
+    // MARK: - Private
+    private func mainStoryboard() -> UIStoryboard {
+        return UIStoryboard(name: "Main", bundle: nil)
     }
 }

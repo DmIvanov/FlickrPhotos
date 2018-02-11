@@ -1,44 +1,54 @@
 //
-//  APIClient.swift
+//  NetworkService.swift
 //  FlickrPhotos
 //
-//  Created by Dmitrii on 09/02/2018.
+//  Created by Dmitrii on 11/02/2018.
 //  Copyright © 2018 DI. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-typealias RequestCompletion = (Data?, URLResponse?, Error?) -> ()
-
-class APIClient: NSObject {
+/*
+ Class-facade for all the remote API interaction
+ it is aware of all the details of Flickr API
+ */
+class NetworkService: NSObject {
 
     // MARK: - Properties
-    private let apiURL = "https://api.flickr.com/services/rest/?"
-    private let generalURLParams: [String: String] = [
+    let apiURL = "https://api.flickr.com/services/rest/?"
+    let generalURLParams: [String: String] = [
         "api_key" : "3e7cc266ae2b0e0d78e279ce8e361736",
         "format" : "json",
         "nojsoncallback" : "1"
     ]
-    private var session: URLSessionProtocol!
+    let urlParamsSafeSearchKey = "safe_search"
+    let urlParamsSafeSearchValue = "1"
+    let urlParamsPageKey = "page"
+    let urlParamsQueryKey = "text"
+    let urlParamsMethodKey = "method"
+    
+    private let apiClient: APIClient
+    private let parser: APIResponseParser
 
 
     // MARK: - Lyfecycle
-    init(session sessionToSet: URLSessionProtocol? = nil) {
-        super.init()
-        if (sessionToSet == nil) {
-            self.session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+    init(parameters: NetworkServiceInitParameters? = nil) {
+        if let params = parameters {
+            self.parser = params.parser
+            self.apiClient = params.apiClient
         } else {
-            self.session = sessionToSet
+            self.parser = APIResponseParser()
+            self.apiClient = APIClient()
         }
     }
 
-
+    
     // MARK: - Public
     func loadPhotos(query: String, page: UInt, completion: @escaping ([Photo]?, Error?) -> ()) {
         let params: [String: String] = [
-            "safe_search" : "1",
-            "page" : "\(page)",
-            "text" : query
+            urlParamsSafeSearchKey : urlParamsSafeSearchValue,
+            urlParamsPageKey : "\(page)",
+            urlParamsQueryKey : query
         ]
 
         // Flickr API doesn't allow to use `photosSearch` method without any query
@@ -49,7 +59,7 @@ class APIClient: NSObject {
                 completion(nil, error)
                 return
             }
-            APIResponseParser.parseResponse(method: apiMethod, data: data, completion: { (responseObj, error) in
+            self.parser.parseResponse(method: apiMethod, data: data, completion: { (responseObj, error) in
                 if error != nil {
                     completion(nil, error)
                 } else if let photos = responseObj as? [Photo] {
@@ -61,37 +71,22 @@ class APIClient: NSObject {
         }
     }
 
-
     // MARK: - Private
     private func sendRequest(method: APIMethod, requestParams: [String: String], completion: @escaping RequestCompletion) {
         var params = generalURLParams
         requestParams.forEach { (key, value) in
             params[key] = value
         }
-        params["method"] = method.rawValue
-        var components = URLComponents(string: apiURL)!
-        components.queryItems = params.map { (key, value) in
-            URLQueryItem(name: key, value: value)
-        }
-        let request = URLRequest(url: components.url!)
-        let task = session.dataTask(
-            with: request,
-            completionHandler: completion
-        )
-        task.resume()
+        params[urlParamsMethodKey] = method.rawValue
+        apiClient.sendRequest(url: apiURL, params: params, completion: completion)
     }
 }
 
 
-protocol URLSessionProtocol {
-    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Swift.Void) -> URLSessionDataTask
+struct NetworkServiceInitParameters {
+    let apiClient: APIClient
+    let parser: APIResponseParser
 }
-
-
-extension URLSession: URLSessionProtocol {}
-
-
-extension APIClient: URLSessionDelegate {}
 
 
 enum APIMethod: String {

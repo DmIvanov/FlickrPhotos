@@ -11,7 +11,6 @@
 		287E0621202C634D00962034 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 287E061F202C634D00962034 /* Main.storyboard */; };
 		287E0623202C634D00962034 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 287E0622202C634D00962034 /* Assets.xcassets */; };
 		287E0626202C634D00962034 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 287E0624202C634D00962034 /* LaunchScreen.storyboard */; };
-		287E0631202C634D00962034 /* FlickrPhotosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E0630202C634D00962034 /* FlickrPhotosTests.swift */; };
 		287E063C202C63FD00962034 /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E063B202C63FD00962034 /* MainInteractor.swift */; };
 		287E0640202C64B800962034 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E063F202C64B800962034 /* DataService.swift */; };
 		287E0642202C650D00962034 /* ViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E0641202C650D00962034 /* ViewControllerFactory.swift */; };
@@ -31,6 +30,16 @@
 		287FA5D1202F4910004581CA /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E0652202CDCC100962034 /* Photo.swift */; };
 		287FA5D2202F4913004581CA /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287FA5C6202EEDBC004581CA /* ImageCache.swift */; };
 		287FA5D3202F491C004581CA /* MainInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E063B202C63FD00962034 /* MainInteractor.swift */; };
+		289D7CA2202F5FD700303EB8 /* APIResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E0656202D9C2500962034 /* APIResponseParser.swift */; };
+		289D7CA3202F601400303EB8 /* ViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E0641202C650D00962034 /* ViewControllerFactory.swift */; };
+		289D7CA4202F601C00303EB8 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287E0644202C659200962034 /* SearchVC.swift */; };
+		289D7CA5202F601E00303EB8 /* SearchVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287FA5C4202EEBA4004581CA /* SearchVCCell.swift */; };
+		289D7CA7202F608100303EB8 /* MainInteractorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CA6202F608100303EB8 /* MainInteractorTest.swift */; };
+		289D7CA9202F697500303EB8 /* APIClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CA8202F697500303EB8 /* APIClientTest.swift */; };
+		289D7CAB2030347C00303EB8 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CAA2030347C00303EB8 /* NetworkService.swift */; };
+		289D7CAC2030347C00303EB8 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CAA2030347C00303EB8 /* NetworkService.swift */; };
+		289D7CAE20305BB600303EB8 /* NetworkServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CAD20305BB600303EB8 /* NetworkServiceTest.swift */; };
+		289D7CB020306B4000303EB8 /* DataServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289D7CAF20306B4000303EB8 /* DataServiceTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +60,6 @@
 		287E0625202C634D00962034 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		287E0627202C634D00962034 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		287E062C202C634D00962034 /* FlickrPhotosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrPhotosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		287E0630202C634D00962034 /* FlickrPhotosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrPhotosTests.swift; sourceTree = "<group>"; };
 		287E0632202C634D00962034 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		287E063B202C63FD00962034 /* MainInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractor.swift; sourceTree = "<group>"; };
 		287E063F202C64B800962034 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
@@ -65,6 +73,11 @@
 		287FA5C6202EEDBC004581CA /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		287FA5C9202EF000004581CA /* image_placeholder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image_placeholder.jpg; sourceTree = "<group>"; };
 		287FA5CB202F486D004581CA /* SearchVCCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVCCellModel.swift; sourceTree = "<group>"; };
+		289D7CA6202F608100303EB8 /* MainInteractorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInteractorTest.swift; sourceTree = "<group>"; };
+		289D7CA8202F697500303EB8 /* APIClientTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientTest.swift; sourceTree = "<group>"; };
+		289D7CAA2030347C00303EB8 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		289D7CAD20305BB600303EB8 /* NetworkServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTest.swift; sourceTree = "<group>"; };
+		289D7CAF20306B4000303EB8 /* DataServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServiceTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				287E0643202C657500962034 /* SearchScene */,
-				287E063E202C648500962034 /* APILayer */,
+				287E063E202C648500962034 /* NetworkLayer */,
 				287E063D202C647100962034 /* DataLayer */,
 				287E061B202C634D00962034 /* AppDelegate.swift */,
 				287E063B202C63FD00962034 /* MainInteractor.swift */,
@@ -124,8 +137,11 @@
 		287E062F202C634D00962034 /* FlickrPhotosTests */ = {
 			isa = PBXGroup;
 			children = (
-				287E0630202C634D00962034 /* FlickrPhotosTests.swift */,
 				287E0632202C634D00962034 /* Info.plist */,
+				289D7CA6202F608100303EB8 /* MainInteractorTest.swift */,
+				289D7CA8202F697500303EB8 /* APIClientTest.swift */,
+				289D7CAD20305BB600303EB8 /* NetworkServiceTest.swift */,
+				289D7CAF20306B4000303EB8 /* DataServiceTest.swift */,
 			);
 			path = FlickrPhotosTests;
 			sourceTree = "<group>";
@@ -140,13 +156,14 @@
 			path = DataLayer;
 			sourceTree = "<group>";
 		};
-		287E063E202C648500962034 /* APILayer */ = {
+		287E063E202C648500962034 /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
+				289D7CAA2030347C00303EB8 /* NetworkService.swift */,
 				287E0654202D7C5900962034 /* APIClient.swift */,
 				287E0656202D9C2500962034 /* APIResponseParser.swift */,
 			);
-			path = APILayer;
+			path = NetworkLayer;
 			sourceTree = "<group>";
 		};
 		287E0643202C657500962034 /* SearchScene */ = {
@@ -283,6 +300,7 @@
 				287E0651202CDC1F00962034 /* SearchVCDataModel.swift in Sources */,
 				287FA5C5202EEBA4004581CA /* SearchVCCell.swift in Sources */,
 				287FA5C7202EEDBC004581CA /* ImageCache.swift in Sources */,
+				289D7CAB2030347C00303EB8 /* NetworkService.swift in Sources */,
 				287E0640202C64B800962034 /* DataService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,12 +309,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				289D7CA2202F5FD700303EB8 /* APIResponseParser.swift in Sources */,
+				289D7CA4202F601C00303EB8 /* SearchVC.swift in Sources */,
+				289D7CA3202F601400303EB8 /* ViewControllerFactory.swift in Sources */,
 				287FA5D1202F4910004581CA /* Photo.swift in Sources */,
+				289D7CA5202F601E00303EB8 /* SearchVCCell.swift in Sources */,
+				289D7CA9202F697500303EB8 /* APIClientTest.swift in Sources */,
+				289D7CAE20305BB600303EB8 /* NetworkServiceTest.swift in Sources */,
+				289D7CAC2030347C00303EB8 /* NetworkService.swift in Sources */,
 				287FA5CD202F486D004581CA /* SearchVCCellModel.swift in Sources */,
 				287FA5CE202F48F4004581CA /* SearchVCDataModel.swift in Sources */,
-				287E0631202C634D00962034 /* FlickrPhotosTests.swift in Sources */,
 				287FA5CF202F48FD004581CA /* APIClient.swift in Sources */,
+				289D7CB020306B4000303EB8 /* DataServiceTest.swift in Sources */,
 				287FA5D2202F4913004581CA /* ImageCache.swift in Sources */,
+				289D7CA7202F608100303EB8 /* MainInteractorTest.swift in Sources */,
 				287FA5D0202F490D004581CA /* DataService.swift in Sources */,
 				287FA5D3202F491C004581CA /* MainInteractor.swift in Sources */,
 			);

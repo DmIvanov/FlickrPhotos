@@ -8,15 +8,26 @@
 
 import UIKit
 
+/*
+ Main business logic unit responsible for switching UI-scenes, storing and sharing global services
+ */
 class MainInteractor {
 
     // MARK: - Properties
     private weak var window: UIWindow?
-    fileprivate let dataService = DataService()
+    private let dataService: DataService
+    private let vcFactory: ViewControllerFactory
 
     // MARK: - Lyfecycle
-    init(mainWindow: UIWindow?) {
+    init(mainWindow: UIWindow?, parameters: MainInteractorInitParameters? = nil) {
         window = mainWindow
+        if let params = parameters {
+            dataService = params.dataService
+            vcFactory = params.viewControllerFactory
+        } else {
+            dataService = DataService()
+            vcFactory = ViewControllerFactory()
+        }
     }
 
 
@@ -29,9 +40,15 @@ class MainInteractor {
 
     // MARK: - Private
     private func goToSearchScreen() {
-        let searchVC = ViewControllerFactory.searchVC()
+        let searchVC = vcFactory.searchVC()
         searchVC.setDataService(ds: dataService)
         let nc = UINavigationController(rootViewController: searchVC)
         window?.rootViewController = nc
     }
+}
+
+
+struct MainInteractorInitParameters {
+    let dataService: DataService
+    let viewControllerFactory: ViewControllerFactory
 }
