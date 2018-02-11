@@ -12,6 +12,8 @@ Simple app for browsing Flickr public photos.
     By default the screen displays recently uploaded public photos. It has a search bar where a user can create a query which will be instantly executed.
 #### Photo Details Screen
     By tapping the photo in Search Screen the user opens Photo Details Screen. There they can see fullscreen photo and some details about it
+    
+All layouts suppose to properly look on both portrait and landscape modes of iPhone.
 
 ## Design, features and solutions
 #### Business logic
