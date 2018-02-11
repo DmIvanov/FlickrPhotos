@@ -69,6 +69,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="xqy-q7-JYD" id="5Y6-E0-ILN"/>
+                        <outlet property="collectionViewTopConstraint" destination="dtN-Xg-gCo" id="8X9-DM-iyK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

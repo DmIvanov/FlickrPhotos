@@ -43,6 +43,8 @@ class MainInteractor {
         let searchVC = vcFactory.searchVC()
         searchVC.setDataService(ds: dataService)
         let nc = UINavigationController(rootViewController: searchVC)
+        nc.navigationBar.isTranslucent = false
+        nc.navigationBar.barTintColor = UIColor.lightGray
         window?.rootViewController = nc
     }
 }

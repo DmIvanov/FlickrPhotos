@@ -16,6 +16,7 @@ class SearchVC: UIViewController {
     fileprivate let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
 
     @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private var collectionViewTopConstraint: NSLayoutConstraint!
 
     private var searchController: UISearchController!
     private var dataModel: SearchVCDataModel! 
@@ -58,12 +59,36 @@ class SearchVC: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search here..."
+        searchController.searchBar.barTintColor = UIColor.lightGray
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
         } else {
-            // NO SEARCH
+            adjustSearchBarIOS10()
         }
         definesPresentationContext = true
+    }
+
+    private func adjustSearchBarIOS10() {
+        searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchController.searchBar)
+        let views: [String: Any] = [
+            "searchBar": searchController.searchBar
+        ]
+        var allConstraints = [NSLayoutConstraint]()
+        let horizontal = NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-0-[searchBar]-0-|",
+            metrics: nil,
+            views: views
+        )
+        let vertical = NSLayoutConstraint.constraints(
+            withVisualFormat: "V:|-0-[searchBar]",
+            metrics: nil,
+            views: views
+        )
+        allConstraints += horizontal
+        allConstraints += vertical
+        NSLayoutConstraint.activate(allConstraints)
+        collectionViewTopConstraint.constant = 44
     }
 
     @objc private func photosUpdated() {
