@@ -15,6 +15,8 @@ Simple app for browsing Flickr public photos.
     
 All layouts suppose to properly look on both portrait and landscape modes of iPhone.
 
+Images are cached in a simple local image cache.
+
 ## Design, features and solutions
 #### Business logic
 - MainInteractor is the main business logic unit, responsible for reacting on events from AppDelegate, switching UI-scenes (currently it's only one of them), creating and storing shared app services and resources
