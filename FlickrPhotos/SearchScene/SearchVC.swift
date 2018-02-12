@@ -111,7 +111,11 @@ extension SearchVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         var availableWidth: CGFloat!
-        availableWidth = view.frame.width - view.safeAreaInsets.left - view.safeAreaInsets.right - paddingSpace
+        if #available(iOS 11.0, *) {
+            availableWidth = view.frame.width - view.safeAreaInsets.left - view.safeAreaInsets.right - paddingSpace
+        } else {
+            availableWidth = view.frame.width - paddingSpace
+        }
         let widthPerItem = floor(availableWidth / itemsPerRow)
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
