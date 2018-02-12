@@ -58,11 +58,7 @@ class SearchVC: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search here..."
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // NO SEARCH
-        }
+        navigationItem.searchController = searchController
         definesPresentationContext = true
     }
 
@@ -109,12 +105,7 @@ extension SearchVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
         var availableWidth: CGFloat!
-        if #available(iOS 11.0, *) {
-            availableWidth = view.frame.width - view.safeAreaInsets.left - view.safeAreaInsets.right - paddingSpace
-        } else {
-            availableWidth = view.frame.width - paddingSpace
-        }
-
+        availableWidth = view.frame.width - view.safeAreaInsets.left - view.safeAreaInsets.right - paddingSpace
         let widthPerItem = floor(availableWidth / itemsPerRow)
         return CGSize(width: widthPerItem, height: widthPerItem)
     }
