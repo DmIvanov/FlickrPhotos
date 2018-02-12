@@ -57,8 +57,14 @@ class SearchVC: UIViewController {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "Search here..."
-        navigationItem.searchController = searchController
+        searchController.searchBar.barTintColor = UIColor.lightGray
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            navigationItem.titleView = searchController.searchBar
+        }
         definesPresentationContext = true
     }
 
