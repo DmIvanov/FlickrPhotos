@@ -29,3 +29,7 @@ Images are cached in a simple local image cache.
 - DataLayer and APILayer are binded by callback closures because it's one-to-one relation. The ther parts of the app (UI scenes) have to subscribe to notification from DataService to react on data changes because it can be one-to-many relation (several app parts can be interested in the same data model)
 - NetworkService is responsible for interacting with remote Flickr API. The interaction is implemented via Flickr REST API. JSON serialization exploits Swift Codable functionality.
 - APIClient is an adapter-class responsible for wrapping specific networking API. Currently it uses plain URLSession under the hood, but can be potentially switched to another networking library.
+
+### TODO:
+- Image loading via Operations
+- Better test coverage
