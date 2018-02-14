@@ -12,7 +12,7 @@ class SearchVC: UIViewController {
 
     // MARK: - Properties
     fileprivate let cardCellId = "PhotoCellId"
-    fileprivate let itemsPerRow: CGFloat = 3
+    fileprivate let itemsPerRow: CGFloat = 2
     fileprivate let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
 
     @IBOutlet private var collectionView: UICollectionView!
@@ -97,11 +97,18 @@ extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("dequeue \(indexPath.row)")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cardCellId, for: indexPath) as! SearchVCCell
         if let photoModel = dataModel.photoModel(index: indexPath.item) {
-            cell.setModel(photoModel)
+            cell.setModel(idx: indexPath.item, model: photoModel)
         }
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let searchCell = cell as? SearchVCCell else { return }
+        print("refresh \(indexPath.item)")
+        searchCell.refresh(idx: indexPath.item)
     }
 }
 

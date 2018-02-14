@@ -10,19 +10,24 @@ import UIKit
 
 class SearchVCCell: UICollectionViewCell {
 
+    private static let placeholder = UIImage(named: "image_placeholder.jpg")
+
     @IBOutlet var imageView: UIImageView?
-    private var currentImageURL: String?
+    private var model: SearchVCCellModel?
+
+    var idx: Int = -1
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        setPlaceholderImage()
+        print("reuse \(idx)")
+        imageView?.image = SearchVCCell.placeholder
     }
 
-    func setModel(_ model: SearchVCCellModel) {
-        currentImageURL = model.imageURL
-        setPlaceholderImage()
-        model.getImage { [weak self] (image, url) in
-            guard url == self?.currentImageURL else {return}
+    func setModel(idx: Int, model: SearchVCCellModel) {
+        self.idx = idx
+        imageView?.image = SearchVCCell.placeholder
+        self.model = model
+        model.getImage(idx: idx) { [weak self] (image, loadedURL) in
             if image != nil {
                 self?.imageView?.image = image
             } else {
@@ -31,8 +36,9 @@ class SearchVCCell: UICollectionViewCell {
         }
     }
 
-    private func setPlaceholderImage() {
-        let placeholder = UIImage(named: "image_placeholder.jpg")
-        imageView?.image = placeholder
+    func refresh(idx: Int) {
+        model?.cancelImageLoading(idx: idx)
+        model = nil
+        imageView?.image = nil
     }
 }

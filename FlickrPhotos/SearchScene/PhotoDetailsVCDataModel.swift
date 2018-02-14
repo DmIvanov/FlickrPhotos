@@ -18,8 +18,10 @@ class PhotoDetailsVCDataModel: NSObject {
         self.photo = photo
     }
 
-    func getImage(completion: @escaping (_ image: UIImage?, _ url: String)->()) {
-        cache.getImage(urlString: photo.imageURL(), completion: completion)
+    func getImage(idx: Int, completion: @escaping (_ image: UIImage?)->()) {
+        cache.getImage(idx: idx, urlString: photo.imageURL(), completion: { (image, error, loadedURL) in
+            completion(image)
+        })
     }
 
     func title() -> String? {
