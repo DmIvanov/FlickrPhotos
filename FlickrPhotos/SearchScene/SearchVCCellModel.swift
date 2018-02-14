@@ -15,7 +15,7 @@ struct SearchVCCellModel {
     let photo: Photo
 
     init(photo: Photo, imageCache: ImageCache) {
-        self.imageURL = photo.imageURL()
+        self.imageURL = photo.thumbnailURL()
         self.photo = photo
         self.cache = imageCache
     }

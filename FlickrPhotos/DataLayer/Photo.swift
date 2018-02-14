@@ -14,6 +14,14 @@ struct Photo: Codable {
     let title: String?
 
     func imageURL() -> String {
-        return "http://farm\(farm).static.flickr.com/\(server)/\(id)_\(secret).jpg"
+        return imageURL(size: "b")
+    }
+
+    func thumbnailURL() -> String {
+        return imageURL(size: "m")
+    }
+
+    private func imageURL(size: String) -> String {
+        return "http://farm\(farm).static.flickr.com/\(server)/\(id)_\(secret)_\(size).jpg"
     }
 }
