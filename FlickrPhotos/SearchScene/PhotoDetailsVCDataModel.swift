@@ -19,7 +19,7 @@ class PhotoDetailsVCDataModel: NSObject {
     }
 
     func getImage(idx: Int, completion: @escaping (_ image: UIImage?)->()) {
-        cache.getImage(idx: idx, urlString: photo.imageURL(), completion: { (image, error, loadedURL) in
+        cache.getImage(urlString: photo.imageURL(), completion: { (image, error, loadedURL) in
             completion(image)
         })
     }

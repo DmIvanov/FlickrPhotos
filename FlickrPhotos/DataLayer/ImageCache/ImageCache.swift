@@ -21,7 +21,7 @@ class ImageCache {
     private var operationsInProgress = [String: ImageLoadingOperation]()
     private var queue: OperationQueue = {
         let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 10
+        queue.maxConcurrentOperationCount = 30
         return queue
     }()
 
@@ -39,19 +39,17 @@ class ImageCache {
     }
 
     // MARK: - Public
-    func getImage(idx: Int, urlString: String, completion: @escaping (_ image: UIImage?, _ error: Error?, _ url: String)->()) {
-        //print("load image: \(idx)")
+    func getImage(urlString: String, completion: @escaping (_ image: UIImage?, _ error: Error?, _ url: String)->()) {
         if let cachedImage = self.cachedImageForURL(urlString) {
             DispatchQueue.main.async() {
                 //print("  from cache: \(idx)")
                 completion(cachedImage, nil, urlString)
             }
         } else {
-            if let operation = operationsInProgress[urlString] {
-                //print("  already in queue: \(idx)")
+            if let _ = operationsInProgress[urlString] {
                 return
             }
-            let operation = ImageLoadingOperation(idx: idx, imageURL: urlString)
+            let operation = ImageLoadingOperation(imageURL: urlString)
             operationsInProgress[urlString] = operation
             operation.completionBlock = { [weak self] in
                 self?.operationsInProgress.removeValue(forKey: urlString)
@@ -59,7 +57,6 @@ class ImageCache {
                     self?.cacheImage(image: image, forURL: urlString)
                 }
                 DispatchQueue.main.async() {
-                    //print("  finished: \(idx) [\(self?.queue.operationCount) in queue]")
                     completion(operation.image, operation.error, urlString)
                 }
             }
@@ -67,12 +64,11 @@ class ImageCache {
         }
     }
 
-    func cancelLoading(idx: Int, imageURL: String) {
+    func cancelLoading(imageURL: String) {
         if let operation = operationsInProgress[imageURL] {
             operation.cancel()
-            //print("canceled: \(idx) [\(queue.operationCount) in queue]")
+            operationsInProgress.removeValue(forKey: imageURL)
         } else {
-           // print("nothing to cancel: \(idx)")
         }
     }
 

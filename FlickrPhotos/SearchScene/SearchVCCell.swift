@@ -12,33 +12,37 @@ class SearchVCCell: UICollectionViewCell {
 
     private static let placeholder = UIImage(named: "image_placeholder.jpg")
 
-    @IBOutlet var imageView: UIImageView?
+    @IBOutlet var imageView: UIImageView!
     private var model: SearchVCCellModel?
-
-    var idx: Int = -1
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        print("reuse \(idx)")
+        model = nil
         imageView?.image = SearchVCCell.placeholder
     }
 
-    func setModel(idx: Int, model: SearchVCCellModel) {
-        self.idx = idx
-        imageView?.image = SearchVCCell.placeholder
+    func setModel(model: SearchVCCellModel) {
+        imageView.image = SearchVCCell.placeholder
         self.model = model
-        model.getImage(idx: idx) { [weak self] (image, loadedURL) in
+        loadImage() 
+    }
+
+    func didEndDisplaying(idx: Int) {
+        model?.cancelImageLoading()
+    }
+
+    func willBeginDisplaying() {
+        loadImage()
+    }
+
+
+    private func loadImage() {
+        model?.getImage() { [weak self] (image, loadedURL) in
             if image != nil {
-                self?.imageView?.image = image
+                self?.imageView.image = image
             } else {
                 //
             }
         }
-    }
-
-    func refresh(idx: Int) {
-        model?.cancelImageLoading(idx: idx)
-        model = nil
-        imageView?.image = nil
     }
 }

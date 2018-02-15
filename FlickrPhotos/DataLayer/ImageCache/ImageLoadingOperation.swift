@@ -12,19 +12,15 @@ class ImageLoadingOperation: Operation {
 
     var error: Error?
     var image: UIImage?
-    var idx: Int = -1
 
     private let url: URL?
 
-    init(idx: Int, imageURL: String) {
+    init(imageURL: String) {
         url = URL(string: imageURL)
-        self.idx = idx
     }
 
     override func main() {
-        //print("op started \(idx)")
         if isCancelled {
-            //print("+++ canceled before started")
             return
         }
         guard let url = url else {
@@ -32,7 +28,6 @@ class ImageLoadingOperation: Operation {
             return
         }
         do {
-            //print("   op loading \(idx)")
             let data = try Data(contentsOf: url)
             image = UIImage(data: data)
             if image == nil {
