@@ -31,5 +31,5 @@ Images are cached in a simple local image cache.
 - APIClient is an adapter-class responsible for wrapping specific networking API. Currently it uses plain URLSession under the hood, but can be potentially switched to another networking library.
 
 ### TODO:
-- Image loading via Operations
+- Image loading via Operations (`operations`-branch WIP)
 - Better test coverage
