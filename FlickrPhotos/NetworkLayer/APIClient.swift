@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Promises
 
 typealias RequestCompletion = (Data?, URLResponse?, Error?) -> ()
 
@@ -30,17 +31,19 @@ class APIClient {
 
 
     // MARK: - Public
-    func sendRequest(url: String, params: [String: String], completion: @escaping RequestCompletion) {
-        var components = URLComponents(string: url)!
-        components.queryItems = params.map { (key, value) in
-            URLQueryItem(name: key, value: value)
+    func sendRequest(url: String, params: [String: String]) -> Promise<(Data?, URLResponse?)> {
+        return Promise { fulfill, reject in
+            var components = URLComponents(string: url)!
+            components.queryItems = params.map { (key, value) in
+                URLQueryItem(name: key, value: value)
+            }
+            let request = URLRequest(url: components.url!)
+            let task = self.session.dataTask(with: request, completionHandler: { (data, response, error) in
+                if error != nil { reject(error!) }
+                else { fulfill((data, response)) }
+            })
+            task.resume()
         }
-        let request = URLRequest(url: components.url!)
-        let task = session.dataTask(
-            with: request,
-            completionHandler: completion
-        )
-        task.resume()
     }
 }
 

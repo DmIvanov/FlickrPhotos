@@ -6,40 +6,26 @@
 //  Copyright © 2018 DI. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import Promises
 
 class APIResponseParser {
 
-    func parseResponse(method: APIMethod, data: Data, completion: (Any?, Error?) -> ()) {
-        switch method {
-        case .photosGet:
-            processGetPhotosResponse(responseData: data, completion: completion)
-        case .photosSearch:
-            processSearchPhotoResponse(responseData: data, completion: completion)
-        }
-    }
-
     // APIMethod.photosGet
-    private func processGetPhotosResponse(responseData: Data, completion: ([Photo]?, Error?) -> ()) {
-        do {
+    func processGetPhotosResponse(responseData: Data) -> Promise<[Photo]> {
+        return Promise {
             let decoder = JSONDecoder()
             let responseObject = try decoder.decode(PhotosGetResponse.self, from: responseData)
-            completion(responseObject.photos.photo, nil)
-        } catch {
-            print(error)
-            completion(nil, error)
+            return responseObject.photos.photo
         }
     }
 
     // APIMethod.photosSearch
-    private func processSearchPhotoResponse(responseData: Data, completion: ([Photo]?, Error?) -> ()) {
-        do {
+    func processSearchPhotoResponse(responseData: Data) -> Promise<[Photo]> {
+        return Promise {
             let decoder = JSONDecoder()
             let responseObject = try decoder.decode(PhotosSearchResponse.self, from: responseData)
-            completion(responseObject.photos.photo, nil)
-        } catch {
-            print(error)
-            completion(nil, error)
+            return responseObject.photos.photo
         }
     }
 }

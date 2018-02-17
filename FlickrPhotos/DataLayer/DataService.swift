@@ -36,17 +36,11 @@ class DataService: NSObject {
 
     // MARK: - Public
     func loadPhotos(query: String, page: UInt) {
-        networkService.loadPhotos(query: query, page: page) { (apiPhotos, error) in
-            if (error != nil || apiPhotos == nil) {
-                DispatchQueue.main.async {
-                    self.notificationService.post(name: DataService.dsPhotosUpdateFailedNotification, object: nil)
-                }
-            } else {
-                self.photos = self.photos + apiPhotos!
-                DispatchQueue.main.async {
-                    self.notificationService.post(name: DataService.dsPhotosUpdateSucceededNotification, object: nil)
-                }
-            }
+        networkService.loadPhotos(query: query, page: page).then { (photos) in
+            self.photos = self.photos + photos
+            self.notificationService.post(name: DataService.dsPhotosUpdateSucceededNotification, object: nil)
+            }.catch(on: .main) { (error) in
+                self.notificationService.post(name: DataService.dsPhotosUpdateFailedNotification, object: nil)
         }
     }
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Promises
 
 /*
  Class-facade for all the remote API interaction
@@ -44,41 +45,37 @@ class NetworkService: NSObject {
 
     
     // MARK: - Public
-    func loadPhotos(query: String, page: UInt, completion: @escaping ([Photo]?, Error?) -> ()) {
+
+    func loadPhotos(query: String, page: UInt) -> Promise<[Photo]> {
         let params: [String: String] = [
-            urlParamsSafeSearchKey : urlParamsSafeSearchValue,
-            urlParamsPageKey : "\(page)",
-            urlParamsQueryKey : query
+            self.urlParamsSafeSearchKey : self.urlParamsSafeSearchValue,
+            self.urlParamsPageKey : "\(page)",
+            self.urlParamsQueryKey : query
         ]
 
         // Flickr API doesn't allow to use `photosSearch` method without any query
-        let apiMethod = (query.count > 0) ? APIMethod.photosSearch : APIMethod.photosGet
-
-        sendRequest(method: apiMethod, requestParams: params) { (data, response, error) in
-            guard let data = data else {
-                completion(nil, error)
-                return
-            }
-            self.parser.parseResponse(method: apiMethod, data: data, completion: { (responseObj, error) in
-                if error != nil {
-                    completion(nil, error)
-                } else if let photos = responseObj as? [Photo] {
-                    completion(photos, nil)
-                } else {
-                    completion(nil, APIError.WrongJSONFormat)
-                }
-            })
+        if query.count > 0 {
+            return sendRequest(method: APIMethod.photosSearch, requestParams: params).then(parser.processSearchPhotoResponse)
+        } else {
+            return sendRequest(method: APIMethod.photosGet, requestParams: params).then(parser.processGetPhotosResponse)
         }
     }
 
     // MARK: - Private
-    private func sendRequest(method: APIMethod, requestParams: [String: String], completion: @escaping RequestCompletion) {
+
+    private func sendRequest(method: APIMethod, requestParams: [String: String]) -> Promise<Data> {
         var params = generalURLParams
         requestParams.forEach { (key, value) in
             params[key] = value
         }
         params[urlParamsMethodKey] = method.rawValue
-        apiClient.sendRequest(url: apiURL, params: params, completion: completion)
+        return apiClient.sendRequest(url: apiURL, params: params).then { (data, response) -> Promise<Data> in
+            if data == nil {
+                throw APIError.CorruptedResponse
+            } else {
+                return Promise(data!)
+            }
+        }
     }
 }
 
@@ -98,4 +95,5 @@ enum APIMethod: String {
 enum APIError: Error {
     case RequestIsInProgress
     case WrongJSONFormat
+    case CorruptedResponse
 }

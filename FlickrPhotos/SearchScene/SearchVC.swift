@@ -26,13 +26,14 @@ class SearchVC: UIViewController {
         super.viewDidLoad()
         title = "Photos"
         configureSearchController()
-        //navigationController?.hidesBarsOnSwipe = true
         NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(photosUpdated),
-            name: DataService.dsPhotosUpdateSucceededNotification,
-            object: nil
-        )
+            forName: DataService.dsPhotosUpdateSucceededNotification,
+            object: nil,
+            queue: .main
+        ) { (notification) in
+                self.dataModel.photosUpdated()
+                self.collectionView.reloadData()
+        }
     }
 
     override func viewWillLayoutSubviews() {
@@ -66,11 +67,6 @@ class SearchVC: UIViewController {
             navigationItem.titleView = searchController.searchBar
         }
         definesPresentationContext = true
-    }
-
-    @objc private func photosUpdated() {
-        dataModel.photosUpdated()
-        collectionView.reloadData()
     }
 }
 
