@@ -41,16 +41,16 @@ class DataServiceTest: XCTestCase {
         networkServiceMock.photos = [Photo]()
         serviceToTest.loadPhotos(query: query, page: page)
         XCTAssert(waitForPromises(timeout: 1))
-        XCTAssertTrue(self.notificationServiceMock.postCalled)
-        XCTAssertEqual(self.notificationServiceMock.name, DataService.dsPhotosUpdateSucceededNotification)
+        XCTAssertTrue(notificationServiceMock.postCalled)
+        XCTAssertEqual(notificationServiceMock.name, DataService.dsPhotosUpdateSucceededNotification)
     }
 
     func testLoadPhotos_notificationService_failure() {
         networkServiceMock.error = NSError(domain: "", code: 0, userInfo: nil)
         serviceToTest.loadPhotos(query: query, page: page)
         XCTAssert(waitForPromises(timeout: 1))
-        XCTAssertTrue(self.notificationServiceMock.postCalled)
-        XCTAssertEqual(self.notificationServiceMock.name, DataService.dsPhotosUpdateFailedNotification)
+        XCTAssertTrue(notificationServiceMock.postCalled)
+        XCTAssertEqual(notificationServiceMock.name, DataService.dsPhotosUpdateFailedNotification)
     }
 
     func testLoadPhotos_addingPhotos() {
@@ -58,6 +58,8 @@ class DataServiceTest: XCTestCase {
         serviceToTest.loadPhotos(query: query, page: page)
         XCTAssert(waitForPromises(timeout: 1))
         XCTAssertEqual(serviceToTest.photos.count, 2)
+        XCTAssertTrue(notificationServiceMock.postCalled)
+        XCTAssertEqual(notificationServiceMock.name, DataService.dsPhotosUpdateSucceededNotification)
     }
 
     func testLoadPhotos_networkError() {
@@ -66,6 +68,8 @@ class DataServiceTest: XCTestCase {
         serviceToTest.loadPhotos(query: query, page: page)
         XCTAssert(waitForPromises(timeout: 1))
         XCTAssertEqual(serviceToTest.photos.count, 0)
+        XCTAssertTrue(notificationServiceMock.postCalled)
+        XCTAssertEqual(notificationServiceMock.name, DataService.dsPhotosUpdateFailedNotification)
     }
 }
 

@@ -38,7 +38,7 @@ class APIClientTest: XCTestCase {
         ]
         let result = apiClientToTest.sendRequest(url: url, params: params)
         XCTAssertTrue(result.isPending)
-        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssert(waitForPromises(timeout: 2))
         XCTAssertTrue(result.isFulfilled)
         XCTAssertTrue(self.taskMock.resumeCalled)
         let request = self.sessionMock.request
