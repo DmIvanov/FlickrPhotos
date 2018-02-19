@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct SearchVCCellModel {
+class SearchVCCellModel {
 
     let imageURL: String
     private weak var cache: ImageCache?
@@ -21,6 +21,16 @@ struct SearchVCCellModel {
     }
 
     func getImage(completion: @escaping (_ image: UIImage?, _ url: String)->()) {
-        cache?.getImage(urlString: imageURL, completion: completion)
+        cache?.getImage(urlString: imageURL, completion: { [weak self] (image, error, loadedURL) in
+            if self == nil {
+                return
+            }
+            guard loadedURL == self!.imageURL else { return }
+            completion(image, self!.imageURL)
+        })
+    }
+
+    func cancelImageLoading() {
+        cache?.cancelLoading(imageURL: imageURL)
     }
 }
