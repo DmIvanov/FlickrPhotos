@@ -39,8 +39,12 @@ class APIClient {
             }
             let request = URLRequest(url: components.url!)
             let task = self.session.dataTask(with: request, completionHandler: { (data, response, error) in
-                if error != nil { reject(error!) }
-                else { fulfill((data, response)) }
+                if error != nil {
+                    reject(error!)
+                }
+                else {
+                    fulfill((data, response))
+                }
             })
             task.resume()
         }

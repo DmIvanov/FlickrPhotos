@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import Promises
 
 class DataServiceTest: XCTestCase {
 
@@ -28,7 +29,7 @@ class DataServiceTest: XCTestCase {
 
     func testLoadPhotos_networkService() {
         serviceToTest.loadPhotos(query: query, page: page)
-
+        XCTAssert(waitForPromises(timeout: 1))
         XCTAssertTrue(networkServiceMock.loadPhotosCalled)
         XCTAssertNotNil(networkServiceMock.query)
         XCTAssertNotNil(networkServiceMock.page)
@@ -39,29 +40,23 @@ class DataServiceTest: XCTestCase {
     func testLoadPhotos_notificationService_success() {
         networkServiceMock.photos = [Photo]()
         serviceToTest.loadPhotos(query: query, page: page)
-        let exp = expectation(description: "DataServiceTest.testLoadPhotos_notificationService_success")
-        DispatchQueue.main.async {
-            XCTAssertTrue(self.notificationServiceMock.postCalled)
-            XCTAssertEqual(self.notificationServiceMock.name, DataService.dsPhotosUpdateSucceededNotification)
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 0.2, handler: nil)
+        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssertTrue(self.notificationServiceMock.postCalled)
+        XCTAssertEqual(self.notificationServiceMock.name, DataService.dsPhotosUpdateSucceededNotification)
     }
 
     func testLoadPhotos_notificationService_failure() {
+        networkServiceMock.error = NSError(domain: "", code: 0, userInfo: nil)
         serviceToTest.loadPhotos(query: query, page: page)
-        let exp = expectation(description: "DataServiceTest.testLoadPhotos_notificationService_failure")
-        DispatchQueue.main.async {
-            XCTAssertTrue(self.notificationServiceMock.postCalled)
-            XCTAssertEqual(self.notificationServiceMock.name, DataService.dsPhotosUpdateFailedNotification)
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 0.2, handler: nil)
+        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssertTrue(self.notificationServiceMock.postCalled)
+        XCTAssertEqual(self.notificationServiceMock.name, DataService.dsPhotosUpdateFailedNotification)
     }
 
     func testLoadPhotos_addingPhotos() {
         networkServiceMock.photos = [Photo(), Photo()]
         serviceToTest.loadPhotos(query: query, page: page)
+        XCTAssert(waitForPromises(timeout: 1))
         XCTAssertEqual(serviceToTest.photos.count, 2)
     }
 
@@ -69,6 +64,7 @@ class DataServiceTest: XCTestCase {
         networkServiceMock.photos = [Photo(), Photo()]
         networkServiceMock.error = APIError.WrongJSONFormat
         serviceToTest.loadPhotos(query: query, page: page)
+        XCTAssert(waitForPromises(timeout: 1))
         XCTAssertEqual(serviceToTest.photos.count, 0)
     }
 }
@@ -94,14 +90,22 @@ class NetworkServiceMock: NetworkService {
     var query: String?
     var page: UInt?
 
-    var photos: [Photo]?
+    var photos = [Photo]()
     var error: Error?
 
-    override func loadPhotos(query: String, page: UInt, completion: @escaping ([Photo]?, Error?) -> ()) {
+    override func loadPhotos(query: String, page: UInt) -> Promise<[Photo]> {
+        NSLog("load calledq")
         self.loadPhotosCalled = true
         self.query = query
         self.page = page
-        completion(photos, error)
+        return Promise { fulfill, reject in
+            NSLog("load promise calledq")
+            if self.error != nil {
+                reject(self.error!)
+            } else  {
+                fulfill(self.photos)
+            }
+        }
     }
 }
 

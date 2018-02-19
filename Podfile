@@ -7,7 +7,8 @@ target 'FlickrPhotos' do
 
   target 'FlickrPhotosTests' do
     inherit! :search_paths
-    # Pods for testing
+    pod 'PromisesSwift', '~> 1.0'
+
   end
 
 end

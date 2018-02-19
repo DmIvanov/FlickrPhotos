@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import Promises
 
 class NetworkServiceTest: XCTestCase {
 
@@ -14,7 +15,7 @@ class NetworkServiceTest: XCTestCase {
 
     var apiClientMock: APIClientMock!
     var parserMock: APIResponseParserMock!
-    
+
     override func setUp() {
         super.setUp()
         apiClientMock = APIClientMock()
@@ -26,59 +27,67 @@ class NetworkServiceTest: XCTestCase {
     func testLoadPhotos_checkParams() {
         let query = "query"
         let page: UInt = 13
-        let exp = expectation(description: "NetworkServiceTest.testLoadPhotos")
         let methodToCompare = APIMethod.photosSearch
-        serviceToTest.loadPhotos(query: query, page: page) { (photos, error) in
-            let paramsToTest = self.apiClientMock.params
-            XCTAssertNotNil(paramsToTest)
-            self.checkParams(paramsToTest: paramsToTest!, paramsToCompare: self.serviceToTest.generalURLParams)
-            self.checkParams(paramsToTest: paramsToTest!, key: self.serviceToTest.urlParamsMethodKey, value: methodToCompare.rawValue)
-            self.checkParams(paramsToTest: paramsToTest!, key: self.serviceToTest.urlParamsSafeSearchKey, value: self.serviceToTest.urlParamsSafeSearchValue)
-            self.checkParams(paramsToTest: paramsToTest!, key: self.serviceToTest.urlParamsPageKey, value: "\(page)")
-            self.checkParams(paramsToTest: paramsToTest!, key: self.serviceToTest.urlParamsQueryKey, value: query)
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 0.2, handler: nil)
+        apiClientMock.data = Data()
+
+        let result = serviceToTest.loadPhotos(query: query, page: page)
+
+        XCTAssertTrue(result.isPending)
+        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssertTrue(result.isFulfilled)
+        let paramsToTest = apiClientMock.params
+        XCTAssertNotNil(paramsToTest)
+        checkParams(paramsToTest: paramsToTest!, paramsToCompare: serviceToTest.generalURLParams)
+        checkParams(paramsToTest: paramsToTest!, key: serviceToTest.urlParamsMethodKey, value: methodToCompare.rawValue)
+        checkParams(paramsToTest: paramsToTest!, key: serviceToTest.urlParamsSafeSearchKey, value: serviceToTest.urlParamsSafeSearchValue)
+        checkParams(paramsToTest: paramsToTest!, key: serviceToTest.urlParamsPageKey, value: "\(page)")
+        checkParams(paramsToTest: paramsToTest!, key: serviceToTest.urlParamsQueryKey, value: query)
     }
 
     func testLoadPhotos_checkParser() {
         let query = "query"
         let page: UInt = 13
-        let exp = expectation(description: "NetworkServiceTest.testLoadPhotos_checkParser")
-        let methodToCompare = APIMethod.photosSearch
         apiClientMock.data = Data()
-        serviceToTest.loadPhotos(query: query, page: page) { (photos, error) in
-            XCTAssertTrue(self.parserMock.parseResponseCalled)
-            XCTAssertNotNil(self.parserMock.method)
-            XCTAssertEqual(self.parserMock.method!, methodToCompare)
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 0.2, handler: nil)
+
+        let result = serviceToTest.loadPhotos(query: query, page: page)
+
+        XCTAssertTrue(result.isPending)
+        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssertTrue(result.isFulfilled)
+        XCTAssertTrue(parserMock.processSearchPhotoCalled)
+        XCTAssertFalse(parserMock.processGetPhotoCalled)
+        XCTAssertEqual(apiClientMock.data, parserMock.data)
     }
 
     func testLoadPhotos_checkParser_nothingToParse() {
         let query = "query"
         let page: UInt = 13
-        let exp = expectation(description: "NetworkServiceTest.testLoadPhotos_checkParser")
-        serviceToTest.loadPhotos(query: query, page: page) { (photos, error) in
-            XCTAssertFalse(self.parserMock.parseResponseCalled)
-            XCTAssertNil(self.parserMock.method)
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 0.2, handler: nil)
+
+        let result = serviceToTest.loadPhotos(query: query, page: page)
+
+        XCTAssertTrue(result.isPending)
+        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssertTrue(result.isRejected)
+        XCTAssertFalse(parserMock.processSearchPhotoCalled)
+        XCTAssertFalse(parserMock.processGetPhotoCalled)
+        XCTAssertNil(parserMock.data)
     }
 
     func testLoadPhotos_checkEmptyQuery() {
         let query = ""
-        let methodToCompare = APIMethod.photosGet
-        let exp = expectation(description: "NetworkServiceTest.testLoadPhotos_checkEmptyQuery")
-        serviceToTest.loadPhotos(query: query, page: 0) { (photos, error) in
-            let paramsToTest = self.apiClientMock.params
-            XCTAssertNotNil(paramsToTest)
-            self.checkParams(paramsToTest: paramsToTest!, key: self.serviceToTest.urlParamsMethodKey, value: methodToCompare.rawValue)
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 0.2, handler: nil)
+        let page: UInt = 0
+        apiClientMock.data = Data()
+
+        let result = serviceToTest.loadPhotos(query: query, page: page)
+
+        XCTAssertTrue(result.isPending)
+        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssertTrue(result.isFulfilled)
+        let paramsToTest = apiClientMock.params
+        XCTAssertNotNil(paramsToTest)
+        XCTAssertTrue(parserMock.processGetPhotoCalled)
+        XCTAssertFalse(parserMock.processSearchPhotoCalled)
+        checkParams(paramsToTest: paramsToTest!, key: serviceToTest.urlParamsMethodKey, value: APIMethod.photosGet.rawValue)
     }
 
 
@@ -101,13 +110,24 @@ class NetworkServiceTest: XCTestCase {
 
 class APIResponseParserMock: APIResponseParser {
 
-    var parseResponseCalled = false
-    var method: APIMethod?
+    var processSearchPhotoCalled = false
+    var processGetPhotoCalled = false
+    var data: Data?
 
-    override func parseResponse(method: APIMethod, data: Data, completion: (Any?, Error?) -> ()) {
-        parseResponseCalled = true
-        self.method = method
-        completion(nil, nil)
+    override func processSearchPhotoResponse(responseData: Data) -> Promise<[Photo]> {
+        processSearchPhotoCalled = true
+        data = responseData
+        return Promise {
+            return [Photo]()
+        }
+    }
+
+    override func processGetPhotosResponse(responseData: Data) -> Promise<[Photo]> {
+        processGetPhotoCalled = true
+        data = responseData
+        return Promise {
+            return [Photo]()
+        }
     }
 }
 
@@ -122,10 +142,17 @@ class APIClientMock: APIClient {
     var response: URLResponse?
     var error: Error?
 
-    override func sendRequest(url: String, params: [String: String], completion: @escaping RequestCompletion) {
+    override func sendRequest(url: String, params: [String : String]) -> Promise<(Data?, URLResponse?)> {
         sendRequestCalled = true
         self.params = params
         self.url = url
-        completion(data, response, error)
+        return Promise<(Data?, URLResponse?)> { fulfill, reject in
+            if self.error == nil {
+                fulfill((self.data, self.response))
+            } else {
+                reject(self.error!)
+            }
+        }
     }
 }
+

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import Promises
 
 class APIClientTest: XCTestCase {
 
@@ -35,20 +36,19 @@ class APIClientTest: XCTestCase {
             key1 : val1,
             key2 : val2
         ]
-        let exp = expectation(description: "APIClientTest.testSendRequest")
-        apiClientToTest.sendRequest(url: url, params: params) { (data, response, error) in
-            XCTAssertTrue(self.taskMock.resumeCalled)
-            let request = self.sessionMock.request
-            XCTAssertNotNil(request)
-            let urlToCheck = request!.url
-            XCTAssertNotNil(urlToCheck)
-            let validUrl =
-                (urlToCheck!.absoluteString == "\(url)?\(key1)=\(val1)&\(key2)=\(val2)") ||
+        let result = apiClientToTest.sendRequest(url: url, params: params)
+        XCTAssertTrue(result.isPending)
+        XCTAssert(waitForPromises(timeout: 1))
+        XCTAssertTrue(result.isFulfilled)
+        XCTAssertTrue(self.taskMock.resumeCalled)
+        let request = self.sessionMock.request
+        XCTAssertNotNil(request)
+        let urlToCheck = request!.url
+        XCTAssertNotNil(urlToCheck)
+        let validUrl =
+            (urlToCheck!.absoluteString == "\(url)?\(key1)=\(val1)&\(key2)=\(val2)") ||
                 (urlToCheck!.absoluteString == "\(url)?\(key2)=\(val2)&\(key1)=\(val1)")
-            XCTAssertTrue(validUrl)
-            exp.fulfill()
-        }
-        waitForExpectations(timeout: 0.2, handler: nil)
+        XCTAssertTrue(validUrl)
     }
 }
 

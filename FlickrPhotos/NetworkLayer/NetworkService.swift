@@ -70,10 +70,12 @@ class NetworkService: NSObject {
         }
         params[urlParamsMethodKey] = method.rawValue
         return apiClient.sendRequest(url: apiURL, params: params).then { (data, response) -> Promise<Data> in
-            if data == nil {
-                throw APIError.CorruptedResponse
-            } else {
-                return Promise(data!)
+            return Promise { fulfill, reject in
+                if data != nil {
+                    fulfill(data!)
+                } else {
+                    reject(APIError.CorruptedResponse)
+                }
             }
         }
     }
