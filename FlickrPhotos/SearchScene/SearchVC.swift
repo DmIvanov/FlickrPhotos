@@ -26,18 +26,20 @@ class SearchVC: UIViewController {
         super.viewDidLoad()
         title = "Photos"
         configureSearchController()
-        //navigationController?.hidesBarsOnSwipe = true
         NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(photosUpdated),
-            name: DataService.dsPhotosUpdateSucceededNotification,
-            object: nil
-        )
-    }
-
-    override func viewWillLayoutSubviews() {
-        let layout = collectionView.collectionViewLayout
-        layout.invalidateLayout()
+            forName: DataService.dsPhotosUpdateSucceededNotification,
+            object: nil,
+            queue: OperationQueue.main) { (notification) in
+                self.dataModel.photosUpdated()
+                self.collectionView.reloadData()
+        }
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name.UIDeviceOrientationDidChange,
+            object: nil,
+            queue: OperationQueue.main) { (notification) in
+                let layout = self.collectionView.collectionViewLayout
+                layout.invalidateLayout()
+        }
     }
 
     deinit {
@@ -67,11 +69,6 @@ class SearchVC: UIViewController {
         }
         definesPresentationContext = true
     }
-
-    @objc private func photosUpdated() {
-        dataModel.photosUpdated()
-        collectionView.reloadData()
-    }
 }
 
 
@@ -99,9 +96,19 @@ extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cardCellId, for: indexPath) as! SearchVCCell
         if let photoModel = dataModel.photoModel(index: indexPath.item) {
-            cell.setModel(photoModel)
+            cell.setModel(model: photoModel)
         }
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let searchCell = cell as? SearchVCCell else { return }
+        searchCell.willBeginDisplaying()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let searchCell = cell as? SearchVCCell else { return }
+        searchCell.didEndDisplaying(idx: indexPath.item)
     }
 }
 

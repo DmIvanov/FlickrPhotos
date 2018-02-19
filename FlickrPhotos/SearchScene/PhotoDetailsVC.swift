@@ -27,7 +27,7 @@ class PhotoDetailsVC: UIViewController {
 
     // MARK: - Private
     private func fillIn() {
-        dataModel.getImage(completion: { (image, url) in
+        dataModel.getImage(idx: -1, completion: { (image) in
             self.imageView.image = image
         })
         details.text = dataModel.detailesText()
