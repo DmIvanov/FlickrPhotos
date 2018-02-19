@@ -94,12 +94,10 @@ class NetworkServiceMock: NetworkService {
     var error: Error?
 
     override func loadPhotos(query: String, page: UInt) -> Promise<[Photo]> {
-        NSLog("load calledq")
         self.loadPhotosCalled = true
         self.query = query
         self.page = page
         return Promise { fulfill, reject in
-            NSLog("load promise calledq")
             if self.error != nil {
                 reject(self.error!)
             } else  {

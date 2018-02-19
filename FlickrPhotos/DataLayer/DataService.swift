@@ -37,7 +37,6 @@ class DataService: NSObject {
     // MARK: - Public
     func loadPhotos(query: String, page: UInt) {
         networkService.loadPhotos(query: query, page: page).then { (photos) in
-            NSLog("then calledq")
             self.photos = self.photos + photos
             self.notificationService.post(name: DataService.dsPhotosUpdateSucceededNotification, object: nil)
             }.catch() { (error) in
