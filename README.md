@@ -1,5 +1,9 @@
 # FlickrPhotos
-Simple app for browsing Flickr public photos.
+Simple app for browsing Flickr public photos. The playground for some experiments:  
+	- Flickr API  
+	- Image Cache (LRU Cache)  
+	- Photo Collection View + Operations  
+	- [Promises](https://github.com/DmIvanov/FlickrPhotos/tree/Promises) using [Google Promises Lib](https://github.com/google/promises)   
 
 ## Main concepts of the project are:
 	- modularity 
@@ -9,13 +13,11 @@ Simple app for browsing Flickr public photos.
 
 ## Functionality
 #### Photo Search Screen.
-    By default the screen displays recently uploaded public photos. It has a search bar where a user can create a query which will be instantly executed.
+By default the screen displays recently uploaded public photos. It has a search bar where a user can create a query which will be instantly executed.
 #### Photo Details Screen
-    By tapping the photo in Search Screen the user opens Photo Details Screen. There they can see fullscreen photo and some details about it
+By tapping the photo in Search Screen the user opens Photo Details Screen. There they can see fullscreen photo and some details about it
     
 All layouts suppose to properly look on both portrait and landscape modes of iPhone.
-
-Images are cached in a simple local image cache.
 
 ## Design, features and solutions
 #### Business logic
@@ -30,6 +32,12 @@ Images are cached in a simple local image cache.
 - NetworkService is responsible for interacting with remote Flickr API. The interaction is implemented via Flickr REST API. JSON serialization exploits Swift Codable functionality.
 - APIClient is an adapter-class responsible for wrapping specific networking API. Currently it uses plain URLSession under the hood, but can be potentially switched to another networking library.
 
+#### Image Cache
+- Images are cached in a simple local image cache.
+- Image loading is based on Operations, so it can be canceled in some cases (for ex, when scrolling fast the CollectionView in Search Screen)
+
 ### TODO:
-- Image loading via Operations (`operations`-branch WIP)
+- More Promises (`promises`-branch)
+- Local storage (Realm?)
+- More sophisticated cache
 - Better test coverage
